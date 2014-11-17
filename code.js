@@ -60,6 +60,6 @@ $('#field').on('keypress', function (e) {
 });
 
 function end() {
-    $('#field').off('input').off('keydown').val("");
+    $('#field').off('input').off('keydown').val("").prop('disabled', true);
     $('#text').html("Done!");
 }
