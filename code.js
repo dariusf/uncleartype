@@ -128,7 +128,15 @@ console.log(literally(selected));
 function speakLiterally(text) {
     cancel();
     var utterance = new SpeechSynthesisUtterance(text);
-    utterance.voice = window.speechSynthesis.getVoices()[currentVoice];
+
+    if ($("#randomVoice").prop("checked")) {
+        var r = ~~(window.speechSynthesis.getVoices().length * Math.random());
+        utterance.voice = window.speechSynthesis.getVoices()[r];
+        $("#voice").val(r);
+    } else {
+        utterance.voice = window.speechSynthesis.getVoices()[currentVoice];
+    }
+
     utterance.rate = currentRate;
     window.speechSynthesis.speak(utterance);
 }
