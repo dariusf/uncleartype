@@ -67,7 +67,7 @@ function startsWith(aa, a) {
     return aa.substr(0, a.length) === a;
 }
 
-say();
+talk();
 
 $('#field').on('input', function (e) {
     var current = $('#field').val();
@@ -83,8 +83,8 @@ $('#field').on('input', function (e) {
 
 var SPACE = 32;
 
-function say() {
-    speak(getText(index) + " " + getText(index+1) + " " + getText(index+2));
+function talk() {
+    speak(getText(index) + " " + getText(index+1));// + " " + getText(index+2));
 }
 
 function spell(word) {
@@ -130,9 +130,9 @@ $('#field').on('keypress', function (e) {
         }
     } else if (e.keyCode === SPACE) {
         if (current === getText(index)) {
-            ++index;
-            say();
             e.preventDefault();
+            ++index;
+            talk();
             $('#field').val("");
         }
         highlight(index);
