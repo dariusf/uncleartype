@@ -36,6 +36,20 @@ var texts = [
 ];
 
 var pTag = $("#text");
+window.speechSynthesis.onvoiceschanged = function () {
+    $("#voice").empty();
+    window.speechSynthesis.getVoices().map(function (voice, i) {
+        return $("<option value=" + i + ">" + voice.name + "</option>");
+    }).forEach(function (voice) {
+        $("#voice").append(voice);
+    });
+};
+
+var currentVoice = 0;
+
+$("#voice").change(function (e) {
+    currentVoice = $(this).val();
+});
 
 var selected = texts[~~(Math.random() * texts.length)];
 pTag.html(selected);
@@ -108,6 +122,7 @@ console.log(literally(selected));
 function speakLiterally(text) {
     cancel();
     var utterance = new SpeechSynthesisUtterance(text);
+    utterance.voice = window.speechSynthesis.getVoices()[currentVoice];
     window.speechSynthesis.speak(utterance);
 }
 
