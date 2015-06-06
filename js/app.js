@@ -76,7 +76,13 @@ var TypingDisplay = React.createClass({
             var className = that.props.pos !== i ? '': 'text-primary';
             return <span key={'word'+i} className={className}>{word} </span>;
         });
-        return <div style={{padding: '2%'}}>{elements}</div>;
+        return <div style={{padding: '2%'}}>
+                {elements}
+                <div style={{float: 'right', fontStyle: 'italic', fontSize: '0.95em', marginTop: '10px'}}>
+                    {this.props.source}
+                </div>
+                <div style={{clear: 'both'}} />
+            </div>;
     }
 });
 
@@ -173,8 +179,10 @@ var TypingField = React.createClass({
 
 var TypingApp = React.createClass({
     getInitialState: function() {
+        var sourceAndText = Texts.random();
         return {
-            words: Texts.random().split(/\s+/g),
+            source: sourceAndText[0],
+            words: sourceAndText[1].split(/\s+/g),
             pos: 0,
             ended: false,
             error: false
@@ -242,6 +250,7 @@ var TypingApp = React.createClass({
         return <div>
             <TypingDisplay
                 pos={this.state.pos}
+                source={this.state.source}
                 words={this.state.words} />
             <TypingProgressBar
                 progress={this.state.ended ? 1 : this.state.pos / this.state.words.length} />
