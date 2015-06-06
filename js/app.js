@@ -64,7 +64,7 @@ var TypingDisplay = React.createClass({
 
 var TypingProgressBar = React.createClass({
     render: function () {
-        var value = ~~(this.props.progress * 100) + '%';
+        var value = Math.max(1, ~~(this.props.progress * 100)) + '%';
         return <div className='progress-bar' style={{width: value, height: '1%'}}></div>;
     }
 });
