@@ -117,12 +117,10 @@ var TypingField = React.createClass({
     }
 });
 
-var text = 'hello there this is a test';;// hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test';
-
 var TypingApp = React.createClass({
-    words: text.split(/\s+/g),
     getInitialState: function() {
         return {
+            words: Texts.random().split(/\s+/g),
             pos: 0,
             ended: false,
             error: false,
@@ -139,10 +137,10 @@ var TypingApp = React.createClass({
         Speech.speakExactly(Texts.randomEnding());
     },
     isAtLastWord: function () {
-        return this.state.pos === this.words.length-1;
+        return this.state.pos === this.state.words.length-1;
     },
     getWord: function (index) {
-        return this.words[index] || '';
+        return this.state.words[index] || '';
     },
     getCurrentWord: function () {
         return this.getWord(this.state.pos);
@@ -184,9 +182,9 @@ var TypingApp = React.createClass({
         return <div>
             <TypingDisplay
                 pos={this.state.pos}
-                words={this.words} />
+                words={this.state.words} />
             <TypingProgressBar
-                progress={this.state.ended ? 1 : this.state.pos / this.words.length} />
+                progress={this.state.ended ? 1 : this.state.pos / this.state.words.length} />
             <TypingField
                 error={this.state.error}
                 backspace={this.checkInput}
