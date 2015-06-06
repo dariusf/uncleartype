@@ -23,7 +23,7 @@ var VoicePicker = React.createClass({
         var index = e.target.value;
         var voice = this.state.options[index];
         Speech.setVoice(voice);
-        Speech.speakExactly('Hello! Very nice to meet you!');
+        Speech.speakExactly(Texts.randomGreeting());
     },
     render: function () {
         var options = this.state.options.map(function (op, i) {
@@ -117,7 +117,7 @@ var TypingField = React.createClass({
     }
 });
 
-var text = 'hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test';
+var text = 'hello there this is a test';;// hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test hello there this is a test';
 
 var TypingApp = React.createClass({
     words: text.split(/\s+/g),
@@ -136,7 +136,7 @@ var TypingApp = React.createClass({
     },
     end: function () {
         this.setState({ended: true});
-        Speech.speakExactly('You are done! Congratulations!');
+        Speech.speakExactly(Texts.randomEnding());
     },
     isAtLastWord: function () {
         return this.state.pos === this.words.length-1;
