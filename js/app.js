@@ -34,6 +34,14 @@ var VoicePicker = React.createClass({
 });
 
 var PrefsModal = React.createClass({
+    propTypes: {
+        onPrefsChanged: React.PropTypes.func,
+    },
+    getDefaultProps: function () {
+        return {
+            onPrefsChanged: function () {},
+        };
+    },
     done: function () {
         this.props.onRequestHide();
         this.props.onPrefsChanged();
@@ -42,7 +50,7 @@ var PrefsModal = React.createClass({
         return <Modal {...this.props} title='Options' animation={false}>
             <div className='modal-body'>
                 <h4>Voice</h4>
-                <VoicePicker {...this.props} />
+                <VoicePicker />
             </div>
             <div className='modal-footer'>
                 <Button onClick={this.done}>Done</Button>
@@ -52,6 +60,16 @@ var PrefsModal = React.createClass({
 });
 
 var TypingDisplay = React.createClass({
+    propTypes: {
+        words: React.PropTypes.arrayOf(React.PropTypes.string),
+        pos: React.PropTypes.number,
+    },
+    getDefaultProps: function() {
+        return {
+            words: '',
+            pos: 0,
+        };
+    },
     render: function () {
         var that = this;
         var elements = this.props.words.map(function (word, i) {
@@ -63,6 +81,14 @@ var TypingDisplay = React.createClass({
 });
 
 var TypingProgressBar = React.createClass({
+    propTypes: {
+        progress: React.PropTypes.number
+    },
+    getDefaultProps: function() {
+        return {
+            progress: 0.01,
+        };
+    },
     render: function () {
         var value = Math.max(1, ~~(this.props.progress * 100)) + '%';
         return <div className='progress-bar' style={{width: value, height: '1%'}}></div>;
@@ -70,6 +96,22 @@ var TypingProgressBar = React.createClass({
 });
 
 var TypingField = React.createClass({
+    propTypes: {
+        disabled: React.PropTypes.bool,
+        error: React.PropTypes.bool,
+        onKeyTyped: React.PropTypes.func,
+        backspace: React.PropTypes.func,
+        style: React.PropTypes.object,
+    },
+    getDefaultProps: function() {
+        return {
+            disabled: false,
+            error: false,
+            onKeyTyped: function() {},
+            backspace: function() {},
+            style: {},
+        };
+    },
     getInitialState: function () {
         return {
             text: ''
