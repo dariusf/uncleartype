@@ -245,6 +245,12 @@ var TypingApp = React.createClass({
     },
     onRestart: function() {
         this.replaceState(this.getInitialState());
+
+        // Required because replaceState is asynchronous
+        var that = this;
+        setTimeout(function() {
+            that.talk(0);
+        }, 0);
     },
     render: function () {
         return <div>
