@@ -134,7 +134,9 @@ var TypingApp = React.createClass({
     },
     end: function () {
         this.setState({ended: true});
-        Speech.speakExactly(Texts.randomEnding());
+        setTimeout(function () {
+            Speech.speakExactly(Texts.randomEnding());
+        }, 300);
     },
     isAtLastWord: function () {
         return this.state.pos === this.state.words.length-1;
