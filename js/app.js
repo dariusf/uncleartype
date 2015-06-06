@@ -186,7 +186,7 @@ var TypingApp = React.createClass({
                 pos={this.state.pos}
                 words={this.words} />
             <TypingProgressBar
-                progress={this.state.pos / this.words.length} />
+                progress={this.state.ended ? 1 : this.state.pos / this.words.length} />
             <TypingField
                 error={this.state.error}
                 backspace={this.checkInput}
