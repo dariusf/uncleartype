@@ -134,6 +134,7 @@ var TypingApp = React.createClass({
     },
     end: function () {
         this.setState({ended: true});
+        Speech.cancel();
         setTimeout(function () {
             Speech.speakExactly(Texts.randomEnding());
         }, 300);
