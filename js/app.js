@@ -1,4 +1,8 @@
 
+var ModalTrigger = ReactBootstrap.ModalTrigger;
+var Modal = ReactBootstrap.Modal;
+var Button = ReactBootstrap.Button;
+
 function startsWith(aa, a) {
     return aa.substr(0, a.length) === a;
 }
@@ -13,14 +17,13 @@ var VoicePicker = React.createClass({
         var that = this;
         Speech.whenVoicesLoad(function (voices) {
             that.setState({options: voices});
-            that.props.onVoicesLoaded();
         });
     },
     onChoiceMade: function (e) {
         var index = e.target.value;
         var voice = this.state.options[index];
         Speech.setVoice(voice);
-        this.props.onVoiceChanged();
+        Speech.speakExactly("Hello! Very nice to meet you!");
     },
     render: function () {
         var options = this.state.options.map(function (op, i) {
@@ -28,6 +31,24 @@ var VoicePicker = React.createClass({
         });
         return <select onChange={this.onChoiceMade}>{options}</select>
     },
+});
+
+var PrefsModal = React.createClass({
+    done: function () {
+        this.props.onRequestHide();
+        this.props.onPrefsChanged();
+    },
+    render: function () {
+        return <Modal {...this.props} title='Options' animation={false}>
+            <div className='modal-body'>
+                <h4>Voice</h4>
+                <VoicePicker {...this.props} />
+            </div>
+            <div className='modal-footer'>
+                <Button onClick={this.done}>Done</Button>
+            </div>
+        </Modal>;
+    }
 });
 
 var TypingDisplay = React.createClass({
@@ -109,6 +130,12 @@ var TypingApp = React.createClass({
             error: false,
         };
     },
+    componentDidMount: function () {
+        var that = this;
+        Speech.whenVoicesLoad(function (voices) {
+            that.talk(0);
+        });
+    },
     end: function () {
         this.setState({ended: true});
         Speech.speakExactly("You are done! Congratulations!");
@@ -126,9 +153,6 @@ var TypingApp = React.createClass({
         var current = this.getWord(currentPos);
         var next = this.getWord(currentPos+1);
         Speech.speak(current + ' ' + next);
-    },
-    onVoicesLoaded: function () {
-        this.talk(0);
     },
     onKeyTyped: function (existing, current) {
         // Returns true if this event led to us going to the next word; false otherwise
@@ -156,14 +180,11 @@ var TypingApp = React.createClass({
             this.setState({error: false});
         }
     },
-    onVoiceChanged: function () {
+    onPrefsChanged: function () {
         this.talk(this.state.pos);
     },
     render: function () {
         return <div>
-            <VoicePicker
-                onVoiceChanged={this.onVoiceChanged}
-                onVoicesLoaded={this.onVoicesLoaded} />
             <TypingDisplay
                 pos={this.state.pos}
                 words={this.words} />
@@ -174,7 +195,13 @@ var TypingApp = React.createClass({
                 backspace={this.checkInput}
                 onKeyTyped={this.onKeyTyped}
                 disabled={this.state.ended} />
-            <i style={{float: 'right', marginTop: '5px'}} className="btn btn-primary glyphicon glyphicon-cog"></i>
+
+            <ModalTrigger modal={<PrefsModal
+                onPrefsChanged={this.onPrefsChanged} />}>
+
+                <i style={{float: 'right', marginTop: '5px'}} className="btn btn-primary glyphicon glyphicon-cog"></i>
+            </ModalTrigger>
+
             <div style={{clear: 'both'}}></div>
         </div>;
     }
