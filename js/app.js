@@ -23,7 +23,7 @@ var VoicePicker = React.createClass({
         var index = e.target.value;
         var voice = this.state.options[index];
         Speech.setVoice(voice);
-        Speech.speakExactly("Hello! Very nice to meet you!");
+        Speech.speakExactly('Hello! Very nice to meet you!');
     },
     render: function () {
         var options = this.state.options.map(function (op, i) {
@@ -106,16 +106,14 @@ var TypingField = React.createClass({
         }
     },
     render: function () {
-        // return //<div className={this.props.error ? 'has-error' : 'has-success'}>
-        return <input type="text" ref="field"
-                style={{backgroundColor: this.props.error ? '#eb6864' : '#ffffff'}}
-                className="form-control input-lg"
-                disabled={this.props.disabled}
-                value={this.state.text}
-                onChange={this.onChange}
-                onKeyUp={this.onKeyUp}
-                onKeyPress={this.onKeyPress} />
-        // </div>;
+        return <input type='text' ref='field'
+            style={{backgroundColor: this.props.error ? '#eb6864' : '#ffffff'}}
+            className='form-control input-lg'
+            disabled={this.props.disabled}
+            value={this.state.text}
+            onChange={this.onChange}
+            onKeyUp={this.onKeyUp}
+            onKeyPress={this.onKeyPress} />
     }
 });
 
@@ -138,7 +136,7 @@ var TypingApp = React.createClass({
     },
     end: function () {
         this.setState({ended: true});
-        Speech.speakExactly("You are done! Congratulations!");
+        Speech.speakExactly('You are done! Congratulations!');
     },
     isAtLastWord: function () {
         return this.state.pos === this.words.length-1;
@@ -173,12 +171,11 @@ var TypingApp = React.createClass({
     },
     checkInput: function (existing) {
         // Check if the current input is a prefix of the target word, and signal error if not
-        if (!startsWith(this.getCurrentWord(), existing)) {
-            Speech.speakExactly("Typo! You typed " + Speech.literally(Speech.spell(existing)) + " instead of " + Speech.literally(this.getCurrentWord()));
-            this.setState({error: true});
-        } else {
-            this.setState({error: false});
+        var isPrefix = startsWith(this.getCurrentWord(), existing);
+        if (!isPrefix) {
+            Speech.speakExactly('Typo! You typed ' + Speech.literally(Speech.spell(existing)) + ' instead of ' + Speech.literally(this.getCurrentWord()));
         }
+        this.setState({error: !isPrefix});
     },
     onPrefsChanged: function () {
         this.talk(this.state.pos);
@@ -199,7 +196,7 @@ var TypingApp = React.createClass({
             <ModalTrigger modal={<PrefsModal
                 onPrefsChanged={this.onPrefsChanged} />}>
 
-                <i style={{float: 'right', marginTop: '5px'}} className="btn btn-primary glyphicon glyphicon-cog"></i>
+                <i style={{float: 'right', marginTop: '5px'}} className='btn btn-primary glyphicon glyphicon-cog'></i>
             </ModalTrigger>
 
             <div style={{clear: 'both'}}></div>
