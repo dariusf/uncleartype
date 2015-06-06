@@ -107,7 +107,10 @@ var TypingField = React.createClass({
     },
     render: function () {
         return <input type='text' ref='field'
-            style={{backgroundColor: this.props.error ? '#eb6864' : '#ffffff'}}
+            style={{
+                marginBottom: '5px',
+                backgroundColor: this.props.error ? '#eb6864' : '#ffffff'
+            }}
             className='form-control input-lg'
             disabled={this.props.disabled}
             value={this.state.text}
@@ -197,7 +200,7 @@ var TypingApp = React.createClass({
             <ModalTrigger modal={<PrefsModal
                 onPrefsChanged={this.onPrefsChanged} />}>
 
-                <i style={{float: 'right', marginTop: '5px'}} className='btn btn-primary glyphicon glyphicon-cog'></i>
+                <i style={{float: 'right'}} className='btn btn-primary glyphicon glyphicon-cog'></i>
             </ModalTrigger>
 
             <div style={{clear: 'both'}}></div>
