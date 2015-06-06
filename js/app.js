@@ -84,6 +84,14 @@ var TypingField = React.createClass({
             that.refs.field.getDOMNode().focus();
         }, 0);
     },
+    componentWillReceiveProps: function(nextProps) {
+        if (this.props.disabled && !nextProps.disabled) {
+            var that = this;
+            setTimeout(function () {
+                that.refs.field.getDOMNode().focus();
+            }, 0);
+        }
+    },
     onKeyPress: function (e) {
         var existing = this.refs.field.getDOMNode().value.trim();
         var current = String.fromCharCode(e.charCode);
@@ -184,6 +192,9 @@ var TypingApp = React.createClass({
     onPrefsChanged: function () {
         this.talk(this.state.pos);
     },
+    onRestart: function() {
+        this.replaceState(this.getInitialState());
+    },
     render: function () {
         return <div>
             <TypingDisplay
@@ -202,6 +213,8 @@ var TypingApp = React.createClass({
 
                 <i style={{float: 'right'}} className='btn btn-primary glyphicon glyphicon-cog'></i>
             </ModalTrigger>
+
+            { this.state.ended ? <a className="btn btn-danger" onClick={this.onRestart}>Restart</a> : null }
 
             <div style={{clear: 'both'}}></div>
         </div>;
