@@ -185,7 +185,8 @@ var TypingApp = React.createClass({
             words: sourceAndText[1].split(/\s+/g),
             pos: 0,
             ended: false,
-            error: false
+            error: false,
+            title: Texts.defaultTitle,
         };
     },
     componentDidMount: function () {
@@ -195,7 +196,7 @@ var TypingApp = React.createClass({
         });
     },
     end: function () {
-        this.setState({ended: true});
+        this.setState({ended: true, title: Texts.defaultTitle});
         Speech.cancel();
         setTimeout(function () {
             Speech.speakExactly(Texts.randomEnding());
@@ -218,16 +219,21 @@ var TypingApp = React.createClass({
     onKeyTyped: function (existing, current) {
         // Returns true if this event led to us going to the next word; false otherwise
         if (this.isAtLastWord() && (existing + current) === this.getCurrentWord()) {
+            // We're done
             this.end();
             return true;
         } else if (current === ' ' && existing === this.getCurrentWord()) {
+            // Move to the next word
+            if (Math.random() < 0.3) {
+                this.setState({title: Texts.randomTitle()});
+            }
             var currentPos = this.state.pos + 1;
             this.setState({pos: currentPos});
             // We need to pass currentPos as there's no guarantee that setState is synchronous
             this.talk(currentPos);
             return true;
         } else {
-            // We know that a complete word hasn't been formed
+            // A complete word hasn't been formed
             this.checkInput(existing+current);
             return false;
         }
@@ -254,6 +260,7 @@ var TypingApp = React.createClass({
     },
     render: function () {
         return <div>
+            <h1>{this.state.title}</h1>
             <TypingDisplay
                 pos={this.state.pos}
                 source={this.state.source}
