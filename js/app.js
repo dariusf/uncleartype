@@ -114,11 +114,12 @@ var TypingField = React.createClass({
         }
     },
     render: function () {
+
+        var inherited = this.props.style;
+        inherited.backgroundColor = this.props.error ? '#eb6864' : '#ffffff';
+
         return <input type='text' ref='field'
-            style={{
-                marginBottom: '5px',
-                backgroundColor: this.props.error ? '#eb6864' : '#ffffff'
-            }}
+            style={inherited}
             className='form-control input-lg'
             disabled={this.props.disabled}
             value={this.state.text}
@@ -134,7 +135,7 @@ var TypingApp = React.createClass({
             words: Texts.random().split(/\s+/g),
             pos: 0,
             ended: false,
-            error: false,
+            error: false
         };
     },
     componentDidMount: function () {
@@ -203,6 +204,7 @@ var TypingApp = React.createClass({
             <TypingProgressBar
                 progress={this.state.ended ? 1 : this.state.pos / this.state.words.length} />
             <TypingField
+                style={{marginBottom: '5px'}}
                 error={this.state.error}
                 backspace={this.checkInput}
                 onKeyTyped={this.onKeyTyped}
